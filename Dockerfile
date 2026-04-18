@@ -1,17 +1,16 @@
-# Use official Python lightweight image
-FROM python:3.10-slim
+# Use the official Microsoft Playwright Python image (which has all OS dependencies built-in)
+FROM mcr.microsoft.com/playwright/python:v1.42.0-jammy
 
-# Set working directory inside the container
 WORKDIR /app
 
-# Copy requirements file first (for caching)
+# Copy requirements file
 COPY requirements.txt .
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright browser (Chromium) and its necessary system dependencies
-RUN playwright install --with-deps chromium
+# Install only Chromium browser (OS dependencies are already handled by the base image)
+RUN playwright install chromium
 
 # Copy all the rest of the project files
 COPY . .
